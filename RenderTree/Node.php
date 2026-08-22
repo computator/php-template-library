@@ -80,6 +80,14 @@ class Node implements IteratorAggregate {
 		array_walk($nodes, fn ($c) => $this->children->push($c));
 	}
 
+	public function replaceChildren(self ...$nodes): void {
+		if ($this->isLeaf())
+			$this->value = null;
+		else
+			$this->children = new NodeLinkedListImpl();
+		$this->appendChildren(...$nodes);
+	}
+
 	// TODO: somehow notify tree that child was removed
 	public function popChild(): self {
 		if ($this->isLeaf())
