@@ -140,6 +140,9 @@ class Renderer implements RenderManager, RenderClient {
 		assert($parent_tpl !== null);
 		assert($this->tpl_state($parent_tpl)->child === $child_tpl);
 
+		assert($this->tpl_state($parent_tpl)->parent_render_target !== null);
+		$this->rendertree->setCurrentNode($this->tpl_state($parent_tpl)->parent_render_target);
+
 		$this->do_render($parent_tpl);
 
 		// if the parent has it's own parent, render that
@@ -199,6 +202,15 @@ class Renderer implements RenderManager, RenderClient {
 		$new_parent_tpl = $this->resolver->resolve($parent_template);
 		$this->tpl_state($tpl)->parent = $new_parent_tpl;
 		$this->tpl_state($new_parent_tpl)->child = $tpl;
+		$curr = $this->rendertree->getCurrentNode();
+		$new_child = $curr->isLeaf()
+			? RenderTree\IgnoredNode::withValue($curr->getValue())
+			: RenderTree\IgnoredNode::withChildren(...$curr);
+		$curr->replaceChildren(
+			$new_child,
+		);
+		$this->rendertree->setCurrentNode($new_child);
+		$this->tpl_state($new_parent_tpl)->parent_render_target = $curr;
 	}
 
 	public function startRenderingBlock(Templates\Base $tpl, string $block_name): void {

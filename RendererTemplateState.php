@@ -12,4 +12,5 @@ class RendererTemplateState {
 	public array $blocks = [];
 	public ?string $current_block = null;
 	public ?RenderTree\Node $current_block_prev_node = null;
+	public ?RenderTree\Node $parent_render_target = null;
 }
