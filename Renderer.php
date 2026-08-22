@@ -24,7 +24,6 @@ class Renderer implements RenderManager, RenderClient {
 
 	protected readonly bool $using_tree;
 	protected RenderTree\Tree $rendertree;
-	protected ?RenderTree\Node $current_node = null;
 	protected ?RenderTree\Buffer $current_buff = null;
 
 	protected bool $rendering_to_string;
@@ -139,14 +138,9 @@ class Renderer implements RenderManager, RenderClient {
 	protected function render_parent(Templates\Base $child_tpl): void	{
 		$parent_tpl = $this->tpl_state($child_tpl)->parent;
 		assert($parent_tpl !== null);
-		assert($this->tpl_state($parent_tpl)->curr_child === null);
+		assert($this->tpl_state($parent_tpl)->child === $child_tpl);
 
-		try {
-			$this->tpl_state($parent_tpl)->curr_child = $child_tpl;
-			$this->do_render($parent_tpl);
-		} finally {
-			$this->tpl_state($parent_tpl)->curr_child = null;
-		}
+		$this->do_render($parent_tpl);
 
 		// if the parent has it's own parent, render that
 		if ($this->tpl_state($parent_tpl)->parent !== null)
@@ -202,7 +196,9 @@ class Renderer implements RenderManager, RenderClient {
 	public function setParentForTemplate(Templates\Base $tpl, string $parent_template): void {
 		if (isset($this->tpl_state($tpl)->parent))
 			throw new Exceptions\RendererStateException("template already has an associated parent");
-		$this->tpl_state($tpl)->parent = $this->resolver->resolve($parent_template);
+		$new_parent_tpl = $this->resolver->resolve($parent_template);
+		$this->tpl_state($tpl)->parent = $new_parent_tpl;
+		$this->tpl_state($new_parent_tpl)->child = $tpl;
 	}
 
 	public function startRenderingBlock(Templates\Base $tpl, string $block_name): void {
@@ -249,9 +245,9 @@ class Renderer implements RenderManager, RenderClient {
 	}
 
 	public function renderChildBlock(Templates\Base $tpl, string $block_name): bool {
-		if (!isset($this->tpl_state($tpl)->curr_child))
+		if (!isset($this->tpl_state($tpl)->child))
 			throw new Exceptions\RendererStateException("template does not have a child set");
-		$child_tpl = $this->tpl_state($tpl)->curr_child;
+		$child_tpl = $this->tpl_state($tpl)->child;
 		if (!array_key_exists($block_name, $this->tpl_state($child_tpl)->blocks))
 			return false;
 		$this->complete_buffer();
