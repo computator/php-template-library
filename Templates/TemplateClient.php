@@ -14,4 +14,6 @@ interface TemplateClient {
 	public function define_end(): void;
 
 	public function block(string $block_name): bool;
+
+	public function primary(): void;
 }

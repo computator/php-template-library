@@ -70,4 +70,14 @@ class TemplateRuntimeController implements TemplateClient {
 			throw new Exceptions\TemplateRenderException("renderer error: $e", previous: $e);
 		}
 	}
+
+	public function primary(): void {
+		try {
+			$this->renderer->renderChildContent($this->template);
+		} catch (Exceptions\RendererStateException $e) {
+			throw new Exceptions\TemplateLogicException("only parent templates can render child content: $e", previous: $e);
+		} catch (Exceptions\RendererException $e) {
+			throw new Exceptions\TemplateRenderException("renderer error: $e", previous: $e);
+		}
+	}
 }

@@ -13,4 +13,5 @@ class RendererTemplateState {
 	public ?string $current_block = null;
 	public ?RenderTree\Node $current_block_prev_node = null;
 	public ?RenderTree\Node $parent_render_target = null;
+	public ?RenderTree\Node $child_render_root = null;
 }

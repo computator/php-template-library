@@ -211,6 +211,7 @@ class Renderer implements RenderManager, RenderClient {
 		);
 		$this->rendertree->setCurrentNode($new_child);
 		$this->tpl_state($new_parent_tpl)->parent_render_target = $curr;
+		$this->tpl_state($tpl)->child_render_root = $new_child;
 	}
 
 	public function startRenderingBlock(Templates\Base $tpl, string $block_name): void {
@@ -268,5 +269,17 @@ class Renderer implements RenderManager, RenderClient {
 		);
 		$this->swap_to_new_buffer();
 		return true;
+	}
+
+	public function renderChildContent(Templates\Base $tpl): void {
+		if (!isset($this->tpl_state($tpl)->child))
+			throw new Exceptions\RendererStateException("template does not have a child set");
+		$child_tpl = $this->tpl_state($tpl)->child;
+		assert($this->tpl_state($child_tpl)->child_render_root !== null);
+		$this->complete_buffer();
+		$this->rendertree->addNode(
+			RenderTree\Node::fromNode($this->tpl_state($child_tpl)->child_render_root),
+		);
+		$this->swap_to_new_buffer();
 	}
 }
