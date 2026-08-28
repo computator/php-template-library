@@ -66,7 +66,7 @@ class Renderer implements RenderManager, RenderClient {
 		if ($this->using_tree)
 			$this->rendertree->render();
 
-		return ob_get_clean();
+		return (string) ob_get_clean();
 	}
 
 	protected function tpl_state(Templates\Base $tpl): RendererTemplateState {
@@ -82,7 +82,7 @@ class Renderer implements RenderManager, RenderClient {
 
 	protected function swap_to_new_buffer(): bool {
 		if ($was_buffering = $this->current_buff !== null)
-			$this->current_buff->append(ob_get_clean());
+			$this->current_buff->append((string) ob_get_clean());
 		$this->current_buff = new RenderTree\Buffer();
 		$this->rendertree->addValue($this->current_buff);
 		ob_start();
@@ -91,11 +91,12 @@ class Renderer implements RenderManager, RenderClient {
 
 	protected function complete_buffer(): void {
 		assert($this->current_buff !== null);
-		$this->current_buff->append(ob_get_clean());
+		$this->current_buff->append((string) ob_get_clean());
 		$this->current_buff = null;
 	}
 
 	protected function do_render(Templates\Base $tpl): void {
+		$was_buffering = false;
 		if ($this->using_tree) {
 			$was_buffering = $this->swap_to_new_buffer();
 		}
@@ -140,8 +141,9 @@ class Renderer implements RenderManager, RenderClient {
 		assert($parent_tpl !== null);
 		assert($this->tpl_state($parent_tpl)->child === $child_tpl);
 
-		assert($this->tpl_state($parent_tpl)->parent_render_target !== null);
-		$this->rendertree->setCurrentNode($this->tpl_state($parent_tpl)->parent_render_target);
+		$target = $this->tpl_state($parent_tpl)->parent_render_target;
+		assert($target !== null);
+		$this->rendertree->setCurrentNode($target);
 
 		$this->do_render($parent_tpl);
 
@@ -247,8 +249,9 @@ class Renderer implements RenderManager, RenderClient {
 		$this->complete_buffer();
 
 		// swap back to the node active before the block
-		assert($this->tpl_state($tpl)->current_block_prev_node !== null);
-		$this->rendertree->setCurrentNode($this->tpl_state($tpl)->current_block_prev_node);
+		$prev_node = $this->tpl_state($tpl)->current_block_prev_node;
+		assert($prev_node !== null);
+		$this->rendertree->setCurrentNode($prev_node);
 		$this->tpl_state($tpl)->current_block_prev_node = null;
 
 		// swap to buffer in original node
@@ -258,9 +261,9 @@ class Renderer implements RenderManager, RenderClient {
 	}
 
 	public function renderChildBlock(Templates\Base $tpl, string $block_name): bool {
-		if (!isset($this->tpl_state($tpl)->child))
-			throw new Exceptions\RendererStateException("template does not have a child set");
 		$child_tpl = $this->tpl_state($tpl)->child;
+		if ($child_tpl === null)
+			throw new Exceptions\RendererStateException("template does not have a child set");
 		if (!array_key_exists($block_name, $this->tpl_state($child_tpl)->blocks))
 			return false;
 		$this->complete_buffer();
@@ -272,13 +275,14 @@ class Renderer implements RenderManager, RenderClient {
 	}
 
 	public function renderChildContent(Templates\Base $tpl): void {
-		if (!isset($this->tpl_state($tpl)->child))
-			throw new Exceptions\RendererStateException("template does not have a child set");
 		$child_tpl = $this->tpl_state($tpl)->child;
-		assert($this->tpl_state($child_tpl)->child_render_root !== null);
+		if ($child_tpl === null)
+			throw new Exceptions\RendererStateException("template does not have a child set");
+        $child_root = $this->tpl_state($child_tpl)->child_render_root;
+		assert($child_root !== null);
 		$this->complete_buffer();
 		$this->rendertree->addNode(
-			RenderTree\Node::fromNode($this->tpl_state($child_tpl)->child_render_root),
+			RenderTree\Node::fromNode($child_root),
 		);
 		$this->swap_to_new_buffer();
 	}
