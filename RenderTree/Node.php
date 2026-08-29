@@ -3,6 +3,7 @@
 namespace Computator\FrameworkUtils\PHPTemplate\RenderTree;
 
 use ArgumentCountError;
+use EmptyIterator;
 use Iterator;
 use IteratorAggregate;
 
@@ -38,7 +39,7 @@ class Node implements IteratorAggregate {
 	private function __construct() {}
 
 	public function getIterator(): Iterator {
-		return $this->children ?? [];
+		return $this->children ?? new EmptyIterator();
 	}
 
 	public function getValue(): ?Renderable {
