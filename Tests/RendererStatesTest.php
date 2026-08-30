@@ -27,9 +27,9 @@ final class RendererStatesTest extends TestCase {
 			),
 		);
 
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'));
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'));
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'));
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), []);
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), []);
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), []);
 
 		$this->assertJsonStringEqualsJsonString(
 			json_encode(
@@ -54,7 +54,7 @@ final class RendererStatesTest extends TestCase {
 				$this->stubTemplate('asdf'),
 				$this->stubTemplate(function (...$n) {
 					echo "A";
-					$n['renderer']->renderProxiedTemplate($n['renderer']->getTemplateAsProxy('test_tpl'));
+					$n['renderer']->renderProxiedTemplate($n['renderer']->getTemplateAsProxy('test_tpl'), []);
 					echo "B";
 				}),
 				$this->stubTemplate('qwer'),
@@ -62,9 +62,9 @@ final class RendererStatesTest extends TestCase {
 			),
 		);
 
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl')); // asdf
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl')); // A + qwer + B
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl')); // zxcv
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), []); // asdf
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), []); // A + qwer + B
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), []); // zxcv
 
 		$this->assertJsonStringEqualsJsonString(
 			json_encode(
@@ -181,7 +181,7 @@ final class RendererStatesTest extends TestCase {
 		$r->setParentForTemplate($t, 'parent_tpl');
 		$r->swap_to_new_buffer();
 		$r->startRenderingBlock($t, 'testblock');
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('child_tpl'));
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('child_tpl'), []);
 		$r->endRenderingBlock($t);
 		$r->complete_buffer();
 
@@ -240,7 +240,7 @@ final class RendererStatesTest extends TestCase {
 			),
 		);
 
-		$r->renderProxiedTemplate($r->getTemplateAsProxy('child_tpl'));
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('child_tpl'), []);
 
 		$this->assertSame(
 			[

@@ -5,13 +5,13 @@ namespace Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
 use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 
-class Error {
+class Error implements RenderableObject {
 	public function __construct(
 		protected readonly RenderManager $renderer,
 		public readonly Exceptions\TemplateRenderException $exception,
 	) {}
 
-	public function __call(string $method, $args): self {
+	public function with(mixed ...$_): self {
 		return $this;
 	}
 

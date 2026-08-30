@@ -51,6 +51,27 @@
 	EXPECTED,
 ],
 
+'child template with data' => [
+	<<<'INPUT'
+	parent before
+	<? self::tpl('child_tpl')->with(a: 'asdf', b: 3)() ?>
+	parent after
+	INPUT,
+	[
+		'child_tpl' => <<<'DEP'
+		child start
+		<?=str_repeat($a, $b)."\n"?>
+		child end
+		DEP,
+	],
+	<<<'EXPECTED'
+	parent before
+	child start
+	asdfasdfasdf
+	child endparent after
+	EXPECTED,
+],
+
 'minimal inheritance' => [
 	<<<'INPUT'
 	<? self::inherit('base_tpl') ?>

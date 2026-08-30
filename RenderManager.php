@@ -9,7 +9,8 @@ interface RenderManager {
 
 	public function getTemplateInstanceAsProxyById(int $orig_proxy_id): ?RenderObjects\TemplateRenderProxy;
 
-	public function renderProxiedTemplate(RenderObjects\TemplateRenderProxy $proxy): void;
+	/** @param array<string,mixed> $context */
+	public function renderProxiedTemplate(RenderObjects\TemplateRenderProxy $proxy, array $context): void;
 
 	public function renderError(Templates\PHPString|Templates\Text|string $error): void;
 

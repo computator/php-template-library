@@ -50,7 +50,7 @@ class Renderer implements RenderManager, RenderClient {
 		// use try-finally since we want to send output as well
 		// as throw any errors
 		try {
-			$this->render_with_inherit($this->root_template);
+			$this->render_with_inherit($this->root_template, []);
 		} finally {
 			if ($this->using_tree)
 				$this->rendertree->render();
@@ -62,7 +62,7 @@ class Renderer implements RenderManager, RenderClient {
 
 		ob_start();
 
-		$this->render_with_inherit($this->root_template);
+		$this->render_with_inherit($this->root_template, []);
 		if ($this->using_tree)
 			$this->rendertree->render();
 
@@ -95,7 +95,8 @@ class Renderer implements RenderManager, RenderClient {
 		$this->current_buff = null;
 	}
 
-	protected function do_render(Templates\Base $tpl): void {
+	/** @param array<string,mixed> $context */
+	protected function do_render(Templates\Base $tpl, array $context): void {
 		$was_buffering = false;
 		if ($this->using_tree) {
 			$was_buffering = $this->swap_to_new_buffer();
@@ -106,7 +107,7 @@ class Renderer implements RenderManager, RenderClient {
 		try {
 			// TODO: handle execute return values
 			$tpl->execute(
-				[],
+				$context,
 				renderer: $this,
 				template: $tpl,
 			);
@@ -145,15 +146,16 @@ class Renderer implements RenderManager, RenderClient {
 		assert($target !== null);
 		$this->rendertree->setCurrentNode($target);
 
-		$this->do_render($parent_tpl);
+		$this->do_render($parent_tpl, []);
 
 		// if the parent has it's own parent, render that
 		if ($this->tpl_state($parent_tpl)->parent !== null)
 			$this->render_parent($parent_tpl);
 	}
 
-	protected function render_with_inherit(Templates\Base $tpl): void {
-		$this->do_render($tpl);
+	/** @param array<string,mixed> $context */
+	protected function render_with_inherit(Templates\Base $tpl, array $context): void {
+		$this->do_render($tpl, $context);
 		if ($this->tpl_state($tpl)->parent !== null)
 			$this->render_parent($tpl);
 	}
@@ -179,11 +181,12 @@ class Renderer implements RenderManager, RenderClient {
 		return $proxy;
 	}
 
-	public function renderProxiedTemplate(RenderObjects\TemplateRenderProxy $proxy): void {
+	/** @param array<string,mixed> $context */
+	public function renderProxiedTemplate(RenderObjects\TemplateRenderProxy $proxy, array $context): void {
 		$prev = $this->rendertree->getCurrentNode();
 		$new_node = $this->rendertree->addNode();
 		$this->rendertree->setCurrentNode($new_node);
-		$this->render_with_inherit($this->tpl_proxy_map[$proxy->id]);
+		$this->render_with_inherit($this->tpl_proxy_map[$proxy->id], $context);
 		$this->rendertree->setCurrentNode($prev);
 		// if rendering is nested the final buffer node
 		// needs to be shifted back to the parent node
@@ -195,7 +198,7 @@ class Renderer implements RenderManager, RenderClient {
 	public function renderError(Templates\PHPString|Templates\Text|string $error): void {
 		if (is_string($error))
 			$error = new Templates\Text($error);
-		$this->do_render($error);
+		$this->do_render($error, []);
 	}
 
 	public function setParentForTemplate(Templates\Base $tpl, string $parent_template): void {

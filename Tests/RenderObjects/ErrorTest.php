@@ -25,9 +25,7 @@ final class ErrorTest extends TestCase {
 			$this->createStub(RenderManager::class),
 			$this->createStub(Exceptions\TemplateRenderException::class),
 		);
-		$this->assertSame($e, $e->asdf());
-		$this->assertSame($e, $e->blah(1, 2, '3'));
-		$this->assertSame($e, $e->tpl());
+		$this->assertSame($e, $e->with(1, 2, '3'));
 	}
 
 	public function testInvokeRendersError(): void {

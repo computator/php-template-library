@@ -207,7 +207,7 @@ final class RendererTest extends TestCase {
 		$p = $r->getTemplateAsProxy('test_tpl');
 		$this->assertSame($t, (new ReflectionProperty(TemplateRenderProxy::class, 'tpl'))->getValue($p));
 
-		$r->renderProxiedTemplate($p);
+		$r->renderProxiedTemplate($p, []);
 		$this->expectOutputString('asdf');
 		$r->rendertree->render();
 	}
@@ -218,7 +218,7 @@ final class RendererTest extends TestCase {
 		$r = TestUtils\VisibleRenderer::create(
 			$tp = $this->stubTemplate(function (...$args) use (&$p): void {
 				echo 'asdf';
-				$args['renderer']->renderProxiedTemplate($p);
+				$args['renderer']->renderProxiedTemplate($p, []);
 				echo 'qwer';
 			}),
 			new TestUtils\QueueTemplateResolver(
@@ -251,8 +251,31 @@ final class RendererTest extends TestCase {
 
 		$proxy = $r->getTemplateAsProxy('test_tpl');
 
-		$r->renderProxiedTemplate($proxy);
+		$r->renderProxiedTemplate($proxy, []);
 		$this->expectOutputString('asdf');
+		$r->rendertree->render();
+	}
+
+	public function testRenderProxiedTemplateUsesContext(): void {
+		$tc = $this;
+		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		$r = TestUtils\VisibleRenderer::create($this->createStub(Templates\Base::class),
+			new TestUtils\QueueTemplateResolver(
+				$this->stubTemplate(function (...$args) use (&$tc) {
+					[0 => $context, 'renderer' => $tr, 'template' => $tt] = $args;
+					$tc->assertSame([
+						'v1' => 'asdf',
+						'v2' => 3,
+					], $context);
+				}),
+			),
+		);
+
+		$r->renderProxiedTemplate($r->getTemplateAsProxy('test_tpl'), [
+			'v1' => 'asdf',
+			'v2' => 3,
+		]);
+		$this->expectOutputString('');
 		$r->rendertree->render();
 	}
 

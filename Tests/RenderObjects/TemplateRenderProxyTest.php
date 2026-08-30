@@ -2,6 +2,7 @@
 
 namespace Computator\FrameworkUtils\PHPTemplate\Tests\RenderObjects;
 
+use Computator\FrameworkUtils\PHPTemplate\Exceptions;
 use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects\TemplateRenderProxy;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
@@ -25,6 +26,61 @@ final class TemplateRenderProxyTest extends TestCase {
 		], SORT_REGULAR));
 	}
 
+	public function testWithSetsContext(): void {
+		$r = $this->createMock(RenderManager::class);
+		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
+
+		$r
+			->expects($this->once())
+			->method('renderProxiedTemplate')
+			->with($proxy, [
+				'a' => 'a',
+				'b' => 2,
+			]);
+
+		$proxy->with(
+			a: 'a',
+			b: 2,
+		)();
+	}
+
+	public function testWithUsingArrays(): void {
+		$r = $this->createMock(RenderManager::class);
+		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
+
+		$r
+			->expects($this->once())
+			->method('renderProxiedTemplate')
+			->with($proxy, [
+				'a' => 'a',
+				'b' => 2,
+			]);
+
+		$proxy->with(
+			[
+				'a' => 'a',
+				'b' => 2,
+			]
+		)();
+	}
+
+	public function testWithUsingInvalidFormat(): void {
+		$r = $this->createMock(RenderManager::class);
+		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
+
+		$r
+			->expects($this->never())
+			->method('renderProxiedTemplate');
+
+		$this->expectException(Exceptions\TemplateLogicException::class);
+		$proxy->with(
+			[
+				'a',
+				'b',
+			]
+		);
+	}
+
 	public function testInvokeRendersSelf(): void {
 		$r = $this->createMock(RenderManager::class);
 		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
@@ -32,7 +88,7 @@ final class TemplateRenderProxyTest extends TestCase {
 		$r
 			->expects($this->once())
 			->method('renderProxiedTemplate')
-			->with($proxy);
+			->with($proxy, []);
 
 		$proxy();
 	}
