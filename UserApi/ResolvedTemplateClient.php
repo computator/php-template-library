@@ -2,7 +2,7 @@
 
 namespace Computator\FrameworkUtils\PHPTemplate\UserApi;
 
-interface RenderableObject {
+interface ResolvedTemplateClient {
 	public function with(mixed ...$context): self;
 	public function __invoke(): void;
 }

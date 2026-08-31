@@ -8,7 +8,7 @@ use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use Computator\FrameworkUtils\PHPTemplate\Utils;
 use ValueError;
 
-class TemplateRenderProxy implements UserApi\RenderableObject {
+class TemplateRenderProxy implements UserApi\ResolvedTemplateClient {
 	protected static int $next_id = 1;
 	public readonly int $id;
 

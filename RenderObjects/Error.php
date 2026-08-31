@@ -5,7 +5,7 @@ namespace Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
 use Computator\FrameworkUtils\PHPTemplate\UserApi;
 
-class Error implements UserApi\RenderableObject {
+class Error implements UserApi\ResolvedTemplateClient {
 	public function __construct(
 		protected readonly UserApi\RenderManager $renderer,
 		public readonly Exceptions\TemplateRenderException $exception,

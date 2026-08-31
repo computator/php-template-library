@@ -6,12 +6,12 @@ This library is a templating engine for PHP that uses native PHP syntax to incre
 ## Method Overview
 The primary engine interfaces are defined in the [`UserApi`](UserApi/) namespace.
 - [`UserApi/TemplateClient`](UserApi/TemplateClient.php): Primary methods for utilizing the engine in templates.
-- [`UserApi/RenderableObject`](UserApi/RenderableObject.php): Methods available on objects retrieved using `self::tpl()` while rendering.
+- [`UserApi/ResolvedTemplateClient`](UserApi/ResolvedTemplateClient.php): Methods available on objects retrieved using `self::tpl()` while rendering.
 - [`UserApi/RenderClient`](UserApi/RenderClient.php): User-visible methods for interacting with the [`Renderer`](Renderer.php).
 - [`UserApi/RenderManager`](UserApi/RenderManager.php): Internal methods the engine uses to control the [`Renderer`](Renderer.php) during the render process.
 
 ## Templates
-Templates are executed with access to the methods defined in [`UserApi/TemplateClient`](UserApi/TemplateClient.php) and are intended to be called via the `self` object as `self::method()`. Template objects retrieved using `self::tpl()` have the methods defined in [`UserApi/RenderableObject`](UserApi/RenderableObject.php).
+Templates are executed with access to the methods defined in [`UserApi/TemplateClient`](UserApi/TemplateClient.php) and are intended to be called via the `self` object as `self::method()`. Template objects retrieved using `self::tpl()` have the methods defined in [`UserApi/ResolvedTemplateClient`](UserApi/ResolvedTemplateClient.php).
 
 Using [Short Open Tags](https://www.php.net/manual/en/language.basic-syntax.phptags.php) and [Alternative Control Structure Syntax](https://www.php.net/manual/en/control-structures.alternative-syntax.php) is encouraged to make templates more readable, as well as leaving out the final semicolon in [closing tags](https://www.php.net/manual/en/language.basic-syntax.instruction-separation.php).
 
