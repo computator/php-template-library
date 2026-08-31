@@ -2,8 +2,6 @@
 
 namespace Computator\FrameworkUtils\PHPTemplate\UserApi;
 
-use Computator\FrameworkUtils\PHPTemplate\RenderObjects;
-
 /**
  * Template engine methods available in templates.
  */
@@ -145,5 +143,5 @@ interface TemplateClient {
 	 * <p>Child content</p>
 	 * ```
 	 */
-	public function tpl(string $template): RenderObjects\TemplateRenderProxy|RenderObjects\Error;
+	public function tpl(string $template): ResolvedTemplateClient;
 }

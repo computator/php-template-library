@@ -23,7 +23,7 @@ class TemplateRuntimeController implements UserApi\TemplateClient {
 		protected readonly Templates\Base $template,
 	) {}
 
-	public function tpl(string $template): RenderObjects\TemplateRenderProxy|RenderObjects\Error {
+	public function tpl(string $template): UserApi\ResolvedTemplateClient {
 		try {
 			return $this->renderer->getTemplateAsProxy($template);
 		} catch (Exceptions\TemplateNotFoundException $e) {
