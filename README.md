@@ -6,7 +6,6 @@ Part of https://github.com/computator/php-framework-utils.
 # Usage
 
 ## Installation
-
 The library is available [on Packagist](https://packagist.org/packages/computator/php-template-library) via `composer`, and is installable as `computator/php-template-library` or included in `computator/framework-utils`.
 
 ## Method Overview
@@ -27,12 +26,14 @@ There are several included template types:
 - [`Templates/PHPString`](Templates/PHPString.php): Executes the provided literal string of PHP code.
 - [`Templates/Text`](Templates/Text.php): Plain text (no execution).
 
-### Example
-This example demonstrates the primary concepts of the library with a main, base, and child template. Note that the templates can be modified to avoid referencing literal `.php` filenames by using an alternative [`TemplateResolver`](TemplateResolver.php).
+### Examples
+These examples demonstrate the primary concepts of the library with a main, parent, and child template. Note that the templates can be modified to avoid referencing literal `.php` filenames by using an alternative [`TemplateResolver`](TemplateResolver.php).
 
-#### `main.php`
+#### Multiple Child Blocks
+
+##### `main.php`
 ```php
-<? self::inherit('base.php') ?>
+<? self::inherit('parent.php') ?>
 
 <? self::define('paragraph_one') ?>
 	Paragraph one text.
@@ -64,9 +65,9 @@ This example demonstrates the primary concepts of the library with a main, base,
 <? self::define_end() ?>
 ```
 
-#### `base.php`
+##### `parent.php`
 ```php
-<h1>Base Page</h1>
+<h1>Parent Page</h1>
 
 <p class="one">
 	<? self::block('paragraph_one') ?>
@@ -83,7 +84,58 @@ This example demonstrates the primary concepts of the library with a main, base,
 </p>
 ```
 
-#### `child.php`
+##### `child.php`
+```php
+<div class="child">
+	<h2><?=htmlspecialchars($title)?></h2>
+	<? foreach ($items as $i): ?>
+		<div class="item">
+			Item content: <?=htmlspecialchars($i)?>
+		</div>
+	<? endforeach ?>
+</div>
+```
+
+#### Primary Child Content
+
+##### `main.php`
+```php
+<? self::inherit('parent.php') ?>
+
+Main text.
+
+Main has a list:
+<ul>
+	<? foreach (range(1, 5) as $n): ?>
+		<li>Item <?=$n?></li>
+	<? endforeach ?>
+</ul>
+
+More text.
+
+Main calls another template:
+<? self::tpl('child.php')->with(
+	title: "Child Title",
+	items: [
+		"one",
+		"two",
+		"three",
+	],
+)() ?>
+
+More text.
+```
+
+##### `parent.php`
+```php
+<h1>Parent Page</h1>
+
+<p class="main">
+	<? self::primary() ?>
+</p>
+```
+
+##### `child.php`
 ```php
 <div class="child">
 	<h2><?=htmlspecialchars($title)?></h2>
