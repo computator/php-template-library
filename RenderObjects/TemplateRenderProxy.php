@@ -3,12 +3,12 @@
 namespace Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use Computator\FrameworkUtils\PHPTemplate\Utils;
 use ValueError;
 
-class TemplateRenderProxy implements RenderableObject {
+class TemplateRenderProxy implements UserApi\RenderableObject {
 	protected static int $next_id = 1;
 	public readonly int $id;
 
@@ -16,7 +16,7 @@ class TemplateRenderProxy implements RenderableObject {
 	protected array $context = [];
 
 	public function __construct(
-		protected readonly RenderManager $renderer,
+		protected readonly UserApi\RenderManager $renderer,
 		protected readonly Templates\Base $tpl,
 	) {
 		$this->id = self::$next_id++;

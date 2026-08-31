@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Computator\FrameworkUtils\PHPTemplate\RenderObjects;
+namespace Computator\FrameworkUtils\PHPTemplate\UserApi;
 
 interface RenderableObject {
 	public function with(mixed ...$context): self;

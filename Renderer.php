@@ -5,6 +5,7 @@ namespace Computator\FrameworkUtils\PHPTemplate;
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
 use Computator\FrameworkUtils\PHPTemplate\RenderTree;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 
 use ArrayAccess;
 use SplObjectStorage;
@@ -15,7 +16,7 @@ use function array_key_exists;
 use function is_string;
 use function ob_get_level,ob_end_flush;
 
-class Renderer implements RenderManager, RenderClient {
+class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	protected readonly Templates\Base $root_template;
 	protected readonly TemplateResolver $resolver;
 	/** @var ArrayAccess<Templates\Base,RendererTemplateState> $tpl_state_map */
@@ -28,7 +29,7 @@ class Renderer implements RenderManager, RenderClient {
 
 	protected bool $rendering_to_string;
 
-	public static function create(Templates\Base $template, TemplateResolver $resolver = new TemplateResolver()): RenderClient {
+	public static function create(Templates\Base $template, TemplateResolver $resolver = new TemplateResolver()): UserApi\RenderClient {
 		return new static($template, $resolver);
 	}
 

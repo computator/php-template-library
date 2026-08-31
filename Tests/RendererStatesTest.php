@@ -2,13 +2,13 @@
 
 namespace Computator\FrameworkUtils\PHPTemplate\Tests;
 
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\RenderTree\Buffer;
 use Computator\FrameworkUtils\PHPTemplate\RenderTree\IgnoredNode;
 use Computator\FrameworkUtils\PHPTemplate\RenderTree\Node;
 use Computator\FrameworkUtils\PHPTemplate\RenderTree\Tree;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
 use Computator\FrameworkUtils\PHPTemplate\Tests\TestUtils;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +18,7 @@ final class RendererStatesTest extends TestCase {
 	use TestUtils\TreeStubs;
 
 	public function testRenderProxiedTemplateSequenceOfTemplates(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$this->stubTemplate('asdf'),
@@ -47,7 +47,7 @@ final class RendererStatesTest extends TestCase {
 	}
 
 	public function testRenderProxiedTemplateNestedTemplates(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$this->stubTemplate('root'),
 			new TestUtils\QueueTemplateResolver(
@@ -88,7 +88,7 @@ final class RendererStatesTest extends TestCase {
 	}
 
 	public function testStartRenderingBlockStructure(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$t = $this->stubTemplate(''),
 			new TestUtils\QueueTemplateResolver(
@@ -127,7 +127,7 @@ final class RendererStatesTest extends TestCase {
 	}
 
 	public function testEndRenderingBlockStructure(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$t = $this->stubTemplate(''),
 			new TestUtils\QueueTemplateResolver(
@@ -169,7 +169,7 @@ final class RendererStatesTest extends TestCase {
 	}
 
 	public function testRenderingBlocksUseIgnoredNodeTree(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$t = $this->stubTemplate(''),
 			new TestUtils\QueueTemplateResolver(
@@ -226,7 +226,7 @@ final class RendererStatesTest extends TestCase {
 	}
 
 	public function testSetParentInvertsNodeReplationship(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(

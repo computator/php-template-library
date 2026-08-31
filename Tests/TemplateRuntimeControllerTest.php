@@ -3,11 +3,11 @@
 namespace Computator\FrameworkUtils\PHPTemplate\Tests;
 
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects\TemplateRenderProxy;
 use Computator\FrameworkUtils\PHPTemplate\TemplateRuntimeController;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +23,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 
 	public function testTplSuccessReturnsTemplateRenderProxy(): void {
 		$p = $this->createStub(TemplateRenderProxy::class);
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$r
 			->expects($this->once())
 			->method('getTemplateAsProxy')
@@ -38,7 +38,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 
 	public function testTplFailureReturnsError(): void {
 		$e = new Exceptions\TemplateNotFoundException();
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$r
 			->expects($this->once())
 			->method('getTemplateAsProxy')
@@ -53,7 +53,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testInheritSuccess(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -66,7 +66,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testInheritInvalidState(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -81,7 +81,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testInheritFailure(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -96,7 +96,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testDefineSuccess(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -109,7 +109,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testDefineInvalidState(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -124,7 +124,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testDefineFailure(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -139,7 +139,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testDefineEndSuccess(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -152,7 +152,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testDefineEndInvalidState(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -167,7 +167,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testDefineEndFailure(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -182,7 +182,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testBlockSuccessExisting(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -197,7 +197,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testBlockSuccessMissing(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -212,7 +212,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testBlockInvalidState(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -227,7 +227,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testBlockFailure(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -242,7 +242,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testPrimarySuccess(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -255,7 +255,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testPrimaryInvalidState(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())
@@ -270,7 +270,7 @@ final class TemplateRuntimeControllerTest extends TestCase {
 	}
 
 	public function testPrimaryFailure(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$t = $this->createMock(Templates\Base::class);
 		$r
 			->expects($this->once())

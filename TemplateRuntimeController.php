@@ -4,22 +4,22 @@ namespace Computator\FrameworkUtils\PHPTemplate;
 
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\Templates\TemplateClient;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 
 use ReflectionMethod;
 
-class TemplateRuntimeController implements TemplateClient {
+class TemplateRuntimeController implements UserApi\TemplateClient {
 
 	public static function getConstructorTestArgs(\PHPUnit\Framework\TestCase $tc): array {
 		$tc_createStub = new ReflectionMethod($tc::class, 'createStub');
 		return [
-			'renderer' => $tc_createStub->invoke($tc, RenderManager::class),
+			'renderer' => $tc_createStub->invoke($tc, UserApi\RenderManager::class),
 			'template' => $tc_createStub->invoke($tc, Templates\Base::class),
 		];
 	}
 
 	public function __construct(
-		public readonly RenderManager $renderer,
+		public readonly UserApi\RenderManager $renderer,
 		protected readonly Templates\Base $template,
 	) {}
 

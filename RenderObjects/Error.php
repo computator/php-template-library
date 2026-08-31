@@ -3,11 +3,11 @@
 namespace Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 
-class Error implements RenderableObject {
+class Error implements UserApi\RenderableObject {
 	public function __construct(
-		protected readonly RenderManager $renderer,
+		protected readonly UserApi\RenderManager $renderer,
 		public readonly Exceptions\TemplateRenderException $exception,
 	) {}
 

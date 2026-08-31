@@ -3,13 +3,13 @@
 namespace Computator\FrameworkUtils\PHPTemplate\Tests;
 
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects\TemplateRenderProxy;
 use Computator\FrameworkUtils\PHPTemplate\Renderer;
 use Computator\FrameworkUtils\PHPTemplate\RenderTree;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
 use Computator\FrameworkUtils\PHPTemplate\Tests\TestUtils;
 use Computator\FrameworkUtils\PHPTemplate\Tests\TestUtils\VisibleRenderer;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -143,7 +143,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testGetTemplateAsProxyTemplateMatches(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$t = $this->createStub(Templates\Base::class),
@@ -157,7 +157,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testGetTemplateAsProxyReturnsUnique(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$this->createStub(Templates\Base::class),
@@ -173,7 +173,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testGetTemplateInstanceAsProxyByIdWithExistingId(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$t = $this->createStub(Templates\Base::class),
@@ -190,14 +190,14 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testGetTemplateInstanceAsProxyByIdWithUnknownId(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class));
 		$p = $r->getTemplateInstanceAsProxyById(1234);
 		$this->assertNull($p);
 	}
 
 	public function testRenderProxiedTemplateIsolated(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$t = $this->stubTemplate('asdf'),
@@ -214,7 +214,7 @@ final class RendererTest extends TestCase {
 
 	public function testRenderProxiedTemplateWhileRendering(): void {
 		$p = null;
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$tp = $this->stubTemplate(function (...$args) use (&$p): void {
 				echo 'asdf';
@@ -234,7 +234,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderProxiedTemplateWithInherit(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
@@ -258,7 +258,7 @@ final class RendererTest extends TestCase {
 
 	public function testRenderProxiedTemplateUsesContext(): void {
 		$tc = $this;
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$this->stubTemplate(function (...$args) use (&$tc) {
@@ -280,7 +280,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderErrorWithStringTemplate(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$e = new Templates\Text('asdf');
 
@@ -290,7 +290,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderErrorWithString(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create($this->createStub(Templates\Base::class));
 
 		$r->renderError('asdf');
@@ -299,7 +299,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testSetParentForTemplateSetsParentRelationship(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
@@ -315,7 +315,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testSetParentForTemplateTwiceThrows(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
 				$this->createStub(Templates\Base::class),
@@ -328,7 +328,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testSetParentForTemplateUpdatesRendertree(): void {
-		/** @var RenderManager|TestUtils\VisibleRenderer $r */
+		/** @var UserApi\RenderManager|TestUtils\VisibleRenderer $r */
 		$r = TestUtils\VisibleRenderer::create(
 			$this->createStub(Templates\Base::class),
 			new TestUtils\QueueTemplateResolver(
@@ -349,7 +349,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testStartRenderingBlockWithEmptyNameThrows(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$this->expectException(ValueError::class);
@@ -357,7 +357,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testStartRenderingBlockWithNoParentThrows(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$this->expectException(Exceptions\RendererStateException::class);
@@ -365,7 +365,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testStartRenderingBlockWithOpenBlockThrows(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$r->tpl_state($t)->parent = $this->createStub(Templates\Base::class);
@@ -377,7 +377,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testStartRenderingBlockWithDuplicateNameThrows(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$r->tpl_state($t)->parent = $this->createStub(Templates\Base::class);
@@ -387,7 +387,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testStartRenderingBlockSuccess(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$r->tpl_state($t)->parent = $this->createStub(Templates\Base::class);
@@ -400,7 +400,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testEndRenderingBlockWithoutOpenBlockThrows(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$this->expectException(Exceptions\RendererStateException::class);
@@ -408,7 +408,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testEndRenderingBlockSuccess(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$r->tpl_state($t)->parent = $this->createStub(Templates\Base::class);
@@ -424,7 +424,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderChildBlockSuccess(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$c = $this->createStub(Templates\Base::class);
@@ -442,7 +442,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderChildBlockWithoutChildThrows(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$this->expectException(Exceptions\RendererStateException::class);
@@ -450,7 +450,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderChildBlockWithMissingBlockReturnsFalse(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$c = $this->createStub(Templates\Base::class);
@@ -462,7 +462,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderChildContentSuccess(): void {
-		/** @var RenderManager|VisibleRenderer $r */
+		/** @var UserApi\RenderManager|VisibleRenderer $r */
 		$r = VisibleRenderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$c = $this->createStub(Templates\Base::class);
@@ -479,7 +479,7 @@ final class RendererTest extends TestCase {
 	}
 
 	public function testRenderChildContentWithoutChildThrows(): void {
-		/** @var RenderManager $r */
+		/** @var UserApi\RenderManager $r */
 		$r = Renderer::create($this->createStub(Templates\Base::class));
 		$t = $this->createStub(Templates\Base::class);
 		$this->expectException(Exceptions\RendererStateException::class);

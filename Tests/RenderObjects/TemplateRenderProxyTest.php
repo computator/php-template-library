@@ -3,16 +3,16 @@
 namespace Computator\FrameworkUtils\PHPTemplate\Tests\RenderObjects;
 
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects\TemplateRenderProxy;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TemplateRenderProxy::class)]
 final class TemplateRenderProxyTest extends TestCase {
 	public function testInstanceIdsAreUnique(): void {
-		$r = $this->createStub(RenderManager::class);
+		$r = $this->createStub(UserApi\RenderManager::class);
 		$t = $this->createStub(Templates\Base::class);
 
 		$p1 = new TemplateRenderProxy($r, $t);
@@ -27,7 +27,7 @@ final class TemplateRenderProxyTest extends TestCase {
 	}
 
 	public function testWithSetsContext(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
 
 		$r
@@ -45,7 +45,7 @@ final class TemplateRenderProxyTest extends TestCase {
 	}
 
 	public function testWithUsingArrays(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
 
 		$r
@@ -65,7 +65,7 @@ final class TemplateRenderProxyTest extends TestCase {
 	}
 
 	public function testWithUsingInvalidFormat(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
 
 		$r
@@ -82,7 +82,7 @@ final class TemplateRenderProxyTest extends TestCase {
 	}
 
 	public function testInvokeRendersSelf(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
 
 		$r

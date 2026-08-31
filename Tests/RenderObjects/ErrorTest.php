@@ -3,8 +3,8 @@
 namespace Computator\FrameworkUtils\PHPTemplate\Tests\RenderObjects;
 
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
-use Computator\FrameworkUtils\PHPTemplate\RenderManager;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects\Error;
+use Computator\FrameworkUtils\PHPTemplate\UserApi;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +13,7 @@ final class ErrorTest extends TestCase {
 	public function testExceptionPropertyValue(): void {
 		$exp = new Exceptions\TemplateRenderException('asdf');
 		$err = new Error(
-			$this->createStub(RenderManager::class),
+			$this->createStub(UserApi\RenderManager::class),
 			$exp,
 		);
 		$this->assertSame($exp, $err->exception);
@@ -22,14 +22,14 @@ final class ErrorTest extends TestCase {
 
 	public function testCallingMethodsReturnsSelf(): void {
 		$e = new Error(
-			$this->createStub(RenderManager::class),
+			$this->createStub(UserApi\RenderManager::class),
 			$this->createStub(Exceptions\TemplateRenderException::class),
 		);
 		$this->assertSame($e, $e->with(1, 2, '3'));
 	}
 
 	public function testInvokeRendersError(): void {
-		$r = $this->createMock(RenderManager::class);
+		$r = $this->createMock(UserApi\RenderManager::class);
 		$r
 			->expects($this->once())
 			->method('renderError')

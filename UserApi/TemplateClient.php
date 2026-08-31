@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Computator\FrameworkUtils\PHPTemplate\Templates;
+namespace Computator\FrameworkUtils\PHPTemplate\UserApi;
 
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 
