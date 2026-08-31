@@ -1,7 +1,13 @@
 # Overview
 This library is a templating engine for PHP that uses native PHP syntax to increase template flexibility and reduce processing overhead.
 
+Part of https://github.com/computator/php-framework-utils.
+
 # Usage
+
+## Installation
+
+The library is available [on Packagist](https://packagist.org/packages/computator/php-template-library) via `composer`, and is installable as `computator/php-template-library` or included in `computator/framework-utils`.
 
 ## Method Overview
 The primary engine interfaces are defined in the [`UserApi`](UserApi/) namespace.
@@ -11,9 +17,9 @@ The primary engine interfaces are defined in the [`UserApi`](UserApi/) namespace
 - [`UserApi/RenderManager`](UserApi/RenderManager.php): Internal methods the engine uses to control the [`Renderer`](Renderer.php) during the render process.
 
 ## Templates
-Templates are executed with access to the methods defined in [`UserApi/TemplateClient`](UserApi/TemplateClient.php) and are intended to be called via the `self` object as `self::method()`. Template objects retrieved using `self::tpl()` have the methods defined in [`UserApi/ResolvedTemplateClient`](UserApi/ResolvedTemplateClient.php).
+Templates are executed with access to the methods defined in [`UserApi/TemplateClient`](UserApi/TemplateClient.php) and are intended to be called via the `self` object as `self::method()`, although `$this->method()` should also work. Template objects retrieved using `self::tpl()` have the methods defined in [`UserApi/ResolvedTemplateClient`](UserApi/ResolvedTemplateClient.php).
 
-Using [Short Open Tags](https://www.php.net/manual/en/language.basic-syntax.phptags.php) and [Alternative Control Structure Syntax](https://www.php.net/manual/en/control-structures.alternative-syntax.php) is encouraged to make templates more readable, as well as leaving out the final semicolon in [closing tags](https://www.php.net/manual/en/language.basic-syntax.instruction-separation.php).
+Using [Short Open Tags](https://www.php.net/manual/en/language.basic-syntax.phptags.php), [Alternative Control Structure Syntax](https://www.php.net/manual/en/control-structures.alternative-syntax.php), and leaving out the final semicolon in [closing tags](https://www.php.net/manual/en/language.basic-syntax.instruction-separation.php) is encouraged to make templates more readable.
 
 ### Template Types
 There are several included template types:
