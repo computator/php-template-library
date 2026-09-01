@@ -152,6 +152,8 @@ interface TemplateClient {
 	 * ```php
 	 * <p>Child content</p>
 	 * ```
+	 *
+	 * @return ResolvedTemplateClient Template reference as [UserApi\ResolvedTemplateClient](ResolvedTemplateClient.php)
 	 */
 	public function tpl(string $template): ResolvedTemplateClient;
 }
