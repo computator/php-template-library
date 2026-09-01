@@ -19,11 +19,13 @@ interface TemplateClient {
 	 * # Examples
 	 *
 	 * ## Normal
+	 *
 	 * ```php
 	 * <? self::block('block_name'): ?>
 	 * ```
 	 *
 	 * ## Fallback
+	 *
 	 * ```php
 	 * <? if(!self::block('block_name')): ?>
 	 * 	Fallback content
@@ -44,6 +46,7 @@ interface TemplateClient {
 	 * parent with `self::inherit()`.
 	 *
 	 * # Example
+	 *
 	 * ```php
 	 * <? self::define('block_name') ?>
 	 * 	Block content
@@ -61,6 +64,7 @@ interface TemplateClient {
 	 * parent with `self::inherit()`.
 	 *
 	 * # Example
+	 *
 	 * ```php
 	 * <? self::define('block_name') ?>
 	 * 	Block content
@@ -77,6 +81,7 @@ interface TemplateClient {
 	 * # Example
 	 *
 	 * ## `child.php`
+	 *
 	 * ```php
 	 * <? self::inherit('parent.php') ?>
 	 *
@@ -86,6 +91,7 @@ interface TemplateClient {
 	 * ```
 	 *
 	 * ## `parent.php`
+	 *
 	 * ```php
 	 * <div class="content">
 	 * 	<? self::block('block_one') ?>
@@ -106,6 +112,7 @@ interface TemplateClient {
 	 * # Example
 	 *
 	 * ## `child.php`
+	 *
 	 * ```php
 	 * <? self::inherit('parent.php') ?>
 	 *
@@ -113,6 +120,7 @@ interface TemplateClient {
 	 * ```
 	 *
 	 * ## `parent.php`
+	 *
 	 * ```php
 	 * <div class="content">
 	 * 	<? self::primary() ?>
@@ -134,11 +142,13 @@ interface TemplateClient {
 	 * # Example
 	 *
 	 * ## `main.php`
+	 *
 	 * ```php
 	 * <? self::tpl('child.php')() ?>
 	 * ```
 	 *
 	 * ## `child.php`
+	 *
 	 * ```php
 	 * <p>Child content</p>
 	 * ```
