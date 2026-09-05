@@ -34,8 +34,6 @@ class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	protected RenderTree\Tree $rendertree;
 	protected ?RenderTree\Buffer $current_buff = null;
 
-	protected bool $rendering_to_string;
-
 	public static function create(Templates\Base $template, TemplateResolver $resolver = new TemplateResolver()): UserApi\RenderClient {
 		return new static($template, $resolver);
 	}
@@ -53,8 +51,6 @@ class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	}
 
 	public function render(): void {
-		$this->rendering_to_string = false;
-
 		// use try-finally since we want to send output as well
 		// as throw any errors
 		try {
@@ -66,8 +62,6 @@ class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	}
 
 	public function renderToString(): string {
-		$this->rendering_to_string = true;
-
 		ob_start();
 
 		$this->render_with_inherit($this->root_template, []);
