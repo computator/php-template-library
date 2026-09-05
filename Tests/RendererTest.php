@@ -124,7 +124,7 @@ final class RendererTest extends TestCase {
 		$r->render();
 	}
 
-	public function testTemplateExecuteContext(): void {
+	public function testWithSetsContextForRender(): void {
 		$r = null;
 		$t = $this->createMock(Templates\Base::class);
 		$t
@@ -132,14 +132,108 @@ final class RendererTest extends TestCase {
 			->method('execute')
 			->with($this->callback(function (...$args) use (&$r, &$t): bool {
 				$this->assertSame([
-					[],
+					[
+						'a' => 'a',
+						'b' => 2,
+					],
 					'renderer' => $r,
 					'template' => $t,
 				], $args);
 				return true;
 			}));
 		$r = Renderer::create($t);
-		$r->renderToString();
+		$r->with(
+			a: 'a',
+			b: 2,
+		)->render();
+	}
+
+	public function testWithSetsContextForRenderToString(): void {
+		$r = null;
+		$t = $this->createMock(Templates\Base::class);
+		$t
+			->expects($this->once())
+			->method('execute')
+			->with($this->callback(function (...$args) use (&$r, &$t): bool {
+				$this->assertSame([
+					[
+						'a' => 'a',
+						'b' => 2,
+					],
+					'renderer' => $r,
+					'template' => $t,
+				], $args);
+				return true;
+			}));
+		$r = Renderer::create($t);
+		$r->with(
+			a: 'a',
+			b: 2,
+		)->renderToString();
+	}
+
+	public function testWithTwiceReplacesContext(): void {
+		$r = null;
+		$t = $this->createMock(Templates\Base::class);
+		$t
+			->expects($this->once())
+			->method('execute')
+			->with($this->callback(function (...$args) use (&$r, &$t): bool {
+				$this->assertSame([
+					[
+						'a' => 'a',
+						'b' => 2,
+					],
+					'renderer' => $r,
+					'template' => $t,
+				], $args);
+				return true;
+			}));
+		$r = Renderer::create($t);
+		$r->with(
+			a: 'old',
+			b: 1,
+		)->with(
+			a: 'a',
+			b: 2,
+		)->render();
+	}
+
+	public function testWithUsingArrays(): void {
+		$r = null;
+		$t = $this->createMock(Templates\Base::class);
+		$t
+			->expects($this->once())
+			->method('execute')
+			->with($this->callback(function (...$args) use (&$r, &$t): bool {
+				$this->assertSame([
+					[
+						'a' => 'a',
+						'b' => 2,
+					],
+					'renderer' => $r,
+					'template' => $t,
+				], $args);
+				return true;
+			}));
+		$r = Renderer::create($t);
+		$r->with(
+			[
+				'a' => 'a',
+				'b' => 2,
+			]
+		)->render();
+	}
+
+	public function testWithUsingInvalidFormat(): void {
+		$r = Renderer::create($this->stubTemplate('asdf'));
+		$this->expectException(Exceptions\RendererException::class);
+		$r->with(
+			[
+				'a',
+				'b',
+			]
+		);
 	}
 
 	public function testGetTemplateAsProxyTemplateMatches(): void {

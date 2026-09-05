@@ -26,7 +26,7 @@ class TemplateRenderProxy implements UserApi\ResolvedTemplateClient {
 		try {
 			$this->context = Utils::transform_context($context);
 		} catch (ValueError $e) {
-			throw new Exceptions\TemplateLogicException("'with' called using invalid data format: $e", previous: $e);
+			throw new Exceptions\TemplateLogicException("'".__FUNCTION__."' called using invalid data format: $e", previous: $e);
 		}
 		return $this;
 	}

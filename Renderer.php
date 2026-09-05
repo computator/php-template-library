@@ -34,6 +34,9 @@ class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	protected RenderTree\Tree $rendertree;
 	protected ?RenderTree\Buffer $current_buff = null;
 
+	/** @var array<string,mixed> $context */
+	protected array $context = [];
+
 	public static function create(Templates\Base $template, TemplateResolver $resolver = new TemplateResolver()): UserApi\RenderClient {
 		return new static($template, $resolver);
 	}
@@ -50,11 +53,20 @@ class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 		$this->initialize_tree();
 	}
 
+	public function with(mixed ...$context): self {
+		try {
+			$this->context = Utils::transform_context($context);
+		} catch (ValueError $e) {
+			throw new Exceptions\RendererException("'".__FUNCTION__."' called using invalid data format: $e", previous: $e);
+		}
+		return $this;
+	}
+
 	public function render(): void {
 		// use try-finally since we want to send output as well
 		// as throw any errors
 		try {
-			$this->render_with_inherit($this->root_template, []);
+			$this->render_with_inherit($this->root_template, $this->context);
 		} finally {
 			if ($this->using_tree)
 				$this->rendertree->render();
@@ -64,7 +76,7 @@ class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	public function renderToString(): string {
 		ob_start();
 
-		$this->render_with_inherit($this->root_template, []);
+		$this->render_with_inherit($this->root_template, $this->context);
 		if ($this->using_tree)
 			$this->rendertree->render();
 
