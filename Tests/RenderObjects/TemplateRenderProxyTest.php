@@ -44,6 +44,27 @@ final class TemplateRenderProxyTest extends TestCase {
 		)();
 	}
 
+	public function testWithTwiceReplacesContext(): void {
+		$r = $this->createMock(UserApi\RenderManager::class);
+		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
+
+		$r
+			->expects($this->once())
+			->method('renderProxiedTemplate')
+			->with($proxy, [
+				'a' => 'a',
+				'b' => 2,
+			]);
+
+		$proxy->with(
+			a: 'old',
+			b: 1,
+		)->with(
+			a: 'a',
+			b: 2,
+		)();
+	}
+
 	public function testWithUsingArrays(): void {
 		$r = $this->createMock(UserApi\RenderManager::class);
 		$proxy = new TemplateRenderProxy($r, $this->createStub(Templates\Base::class));
