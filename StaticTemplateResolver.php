@@ -5,6 +5,23 @@ namespace Computator\FrameworkUtils\PHPTemplate;
 use function array_key_exists;
 use function is_array;
 
+/**
+ * Maps a static array of template names to template content.
+ *
+ * # Example
+ *
+ * ```php
+ * new StaticTemplateResolver(
+ * 	[
+ * 		'tpl_one' => "Template one contents",
+ * 		'tpl_two' => <<<'EOT'
+ * 			Template <?= number_format(1 + 1) ?> contents
+ * 			EOT,
+ * 	],
+ * 	Templates\PHPString::class,
+ * );
+ * ```
+ */
 class StaticTemplateResolver extends TemplateResolver {
 	public function __construct(
 		protected array $templates,

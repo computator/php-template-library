@@ -5,8 +5,7 @@ namespace Computator\FrameworkUtils\PHPTemplate\UserApi;
 /**
  * Template object reference methods available in templates.
  *
- * These methods are the ones available on objects retrieved
- * using `self::tpl()` while rendering.
+ * These methods are available on objects retrieved using `self::tpl()`.
  */
 interface ResolvedTemplateClient {
 	/**
@@ -68,7 +67,7 @@ interface ResolvedTemplateClient {
 	 * $t->with($data, key1: "value1", key2: "value2")
 	 * ```
 	 *
-	 * @return self Chains to self
+	 * @return $this Chains to self
 	 */
 	public function with(mixed ...$context): self;
 

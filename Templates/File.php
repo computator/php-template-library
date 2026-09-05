@@ -5,6 +5,11 @@ namespace Computator\FrameworkUtils\PHPTemplate\Templates;
 use Computator\FrameworkUtils\PHPTemplate\Exceptions;
 use Computator\FrameworkUtils\PHPTemplate\TemplateRuntimeController;
 
+/**
+ * PHP file template.
+ *
+ * Directly executes the named PHP file as a template.
+ */
 class File extends Base {
 	public readonly string $path;
 

@@ -16,6 +16,13 @@ use function array_key_exists;
 use function is_string;
 use function ob_get_level,ob_end_flush;
 
+/**
+ * Manages the rendering process for the template system.
+ *
+ * The user-visible interface to this is documented by the `RenderClient` interface.
+ *
+ * @see UserApi\RenderClient User-visible interface
+ */
 class Renderer implements UserApi\RenderManager, UserApi\RenderClient {
 	protected readonly Templates\Base $root_template;
 	protected readonly TemplateResolver $resolver;

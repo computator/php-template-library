@@ -4,6 +4,11 @@ namespace Computator\FrameworkUtils\PHPTemplate\Templates;
 
 use Computator\FrameworkUtils\PHPTemplate\TemplateRuntimeController;
 
+/**
+ * PHP string literal template.
+ *
+ * Executes the provided literal string of PHP code as a template.
+ */
 class PHPString extends Base {
 	public readonly string $content;
 

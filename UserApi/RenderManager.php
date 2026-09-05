@@ -5,6 +5,14 @@ namespace Computator\FrameworkUtils\PHPTemplate\UserApi;
 use Computator\FrameworkUtils\PHPTemplate\RenderObjects;
 use Computator\FrameworkUtils\PHPTemplate\Templates;
 
+/**
+ * Internal interface to a `Renderer`.
+ *
+ * These methods are meant for internal use to control the rendering process and
+ * are not intended for use by end-users.
+ *
+ * @see RenderClient The end-user interface to a `Renderer` intended for public use.
+ */
 interface RenderManager {
 	public function getTemplateAsProxy(string $template): RenderObjects\TemplateRenderProxy;
 

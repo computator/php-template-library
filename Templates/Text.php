@@ -2,6 +2,11 @@
 
 namespace Computator\FrameworkUtils\PHPTemplate\Templates;
 
+/**
+ * Plain text template.
+ *
+ * A plain text string template with no PHP execution.
+ */
 class Text extends Base {
 	public function __construct(
 		public readonly string $content,
