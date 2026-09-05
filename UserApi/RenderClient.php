@@ -28,6 +28,7 @@ interface RenderClient {
 	 * # Example
 	 *
 	 * ```php
+	 * <?php
 	 * $resolver = new TemplateResolver(
 	 * 	// This is the class used to instantiate new templates.
 	 * 	// In this case, `Templates\File` is the default so it

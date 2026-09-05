@@ -11,6 +11,7 @@ use function is_array;
  * # Example
  *
  * ```php
+ * <?php
  * new StaticTemplateResolver(
  * 	[
  * 		'tpl_one' => "Template one contents",
